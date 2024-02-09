@@ -32,7 +32,7 @@ else:
         print("Jumlah token unik tidak boleh 0 atau negatif.")
         token_unik = int(input("Masukkan jumlah token unik: "))
    
-    token = input("Masukkan token unik (alphanumeric): ").split()
+    token = input("Masukkan token unik (alphanumeric): ").upper().split()
     isAlphaNum = all(element.isalnum() for element in token)
     isLen2 = all(len(element) == 2 for element in token)
     while len(token) != token_unik or not(isAlphaNum) or not(isLen2):

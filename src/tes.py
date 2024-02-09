@@ -11,3 +11,5 @@ for i in range(len(buffer)-1):
     if buffer[i] in buffer[i+1:]:
         print("duplicate")
         break
+token = input("Masukkan token unik (alphanumeric): ").upper().split()
+print(token)
