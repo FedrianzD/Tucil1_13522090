@@ -48,6 +48,8 @@ def validateMax(arr, ylimit, xlimit):
                 isMax = False
     return isMax
 def FinalList(final_coordinate, final_buffer, maxscore, sequences):
+    if len(final_buffer) == 0:
+        return final_buffer, final_coordinate 
     if all(buffer == final_buffer[0] for buffer in final_buffer):
         return final_buffer[0], final_coordinate[0]
     else:
@@ -145,14 +147,21 @@ def bruteForce(matrix, sequences, buffer_size):
             string = matrix[0][i] 
             buffer_coordinate = []
             buffer_coordinate.append((x+1,y+1)) 
+            if xmax == 0 or ymax == 0:
+                break
             increment_array(movement, xmax, ymax)
     buffer, coordinate = FinalList(final_coordinate, final_buffer, maxscore, sequences)
     print(maxscore)
-    print(buffer) if len(buffer) != 0 else print()
-    var = []
-    for tuple in coordinate:
-        x,y = tuple
-        print(str(x) + ", " + str(y))
+    if maxscore > 0:
+        print(buffer)
+        for tuple in coordinate:
+            x,y = tuple
+            print(str(x) + ", " + str(y))
+    else:
+        print("Tidak ada solusi yang menghasilkan nilai positif")
+    return maxscore, buffer, coordinate
+    
+    
 
             
             

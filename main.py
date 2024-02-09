@@ -1,9 +1,15 @@
 import function
 import time
 import random
-fromFile = input("Masukkan dari file txt? (y/n): ")
+import os.path
+fromFile = input("Masukkan dari file txt? (y/n): ").lower()
+while fromFile != 'y' and fromFile != 'n':
+    fromFile = input("Masukkan dari file txt? (y/n): ").lower()
 if fromFile == 'y':
     filename = input("Masukkan nama file txt: ")
+    while not(os.path.isfile(filename)):
+        print("File tidak ditemukan.")
+        filename = input("Masukkan nama file txt: ")
     print()
     file = open(filename, 'r')
     buffer_size = int(file.readline())
@@ -69,15 +75,50 @@ else:
     matrix_sequence = [[random.choice(token) for i in range(random.randint(2,ukuran_max_seq))] for j in range(jumlah_seq)]
     for item in matrix_sequence:
         item.append(random.randint(1,100))
-             
-function.print_matrix(matrix)
-function.print_matrix(matrix_sequence, False)
-# print(matrix_sequence)
+    function.print_matrix(matrix)
+    function.print_matrix(matrix_sequence, False)
+    print()         
+
 buffer = ["7A", "BD", "7A", "BD", "1C", "BD", "55"]
 buffer2 = ["BD", "E9", "1C", "BD", "7A", "BD", "1C", "BD", "55"]
 buffer3 = "BD E9 1C BD 7A BD 1C BD 55"
-# print(function.score(matrix_sequence, buffer3))
 start = time.time()
-function.bruteForce(matrix, matrix_sequence, buffer_size)
+maxscore, buffer, coordinate = function.bruteForce(matrix, matrix_sequence, buffer_size)
+print()
 finish = time.time()
-print(finish - start)
+print(str((finish - start)*1000) + " ms")
+print()
+
+saveOrNo = input("Apakah ingin menyimpan solusi? (y/n): ")
+while saveOrNo != 'y' and saveOrNo != 'n':
+    saveOrNo = input("Apakah ingin menyimpan solusi? (y/n): ").lower()
+if saveOrNo == 'y':
+    while True:
+        filename = input("Masukkan nama file: ")
+        print()
+        isExistAndFile = os.path.isfile(filename)
+        if isExistAndFile:
+            print("File dengan nama tersebut sudah ada.")
+            print("Apakah Anda ingin mengubah nama file atau rewrite?\n")
+            timpa = input("r untuk rewrite dan u untuk ubah nama file: ").lower()
+            print()
+            while timpa != 'r' and timpa != 'u':
+                timpa = input("r untuk rewrite dan u untuk ubah nama file: ").lower()
+            if timpa == 'u':
+                continue
+            else:
+                break
+        else:
+            break
+    file = open(filename, "w")
+    file.write(str(maxscore) + '\n')
+    if maxscore == 0:
+        file.write("Tidak memiliki kombinasi dengan score positif.\n")
+    else:
+        file.write(buffer + '\n')
+        for tuple in coordinate:
+            x,y = tuple
+            file.write(str(x) + ", " + str(y) + '\n')
+    file.write('\n')
+    file.write(str((finish - start)*1000) + " ms")
+    file.write('\n')
