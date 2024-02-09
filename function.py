@@ -1,7 +1,7 @@
 import numpy as np
 import copy
 def print_matrix(matrix, default=True):
-    if default:
+    if default: # scorenya disamping
         for i in range(len(matrix)):
             for j in range(len(matrix[i])):
                 if j != len(matrix[i])-1:
@@ -9,7 +9,7 @@ def print_matrix(matrix, default=True):
                 else:
                     print(matrix[i][j])
         print()
-    else:
+    else: # scorenya di newline
         for i in range(len(matrix)):
             for j in range(len(matrix[i])):
                 if j < len(matrix[i])-2:
@@ -47,70 +47,113 @@ def validateMax(arr, ylimit, xlimit):
             if arr[i] != xlimit:
                 isMax = False
     return isMax
-def distance(list):
-    for i in list:
-        for j in range(len(i)):
-            x = 0
-def bruteForce(matrix, sequence, buffer_size):
+def FinalList(final_coordinate, final_buffer, maxscore, sequences):
+    if all(buffer == final_buffer[0] for buffer in final_buffer):
+        return final_buffer[0], final_coordinate[0]
+    else:
+        buffer = min(final_buffer, key=len)
+        coordinate = np.where(np.array(final_buffer) == buffer)
+        return buffer, final_coordinate[coordinate[0][0]]
+        # realFinalBuffer = []
+        # for buffer in final_buffer:
+        #     tempBuffer = []
+        #     for j in range(len(buffer)-2):
+        #         if score(sequences, buffer[-j]) != maxscore:
+        #             realFinalBuffer.append(buffer)
+        #             break
+        #         else:
+        #             tempBuffer = buffer[-j]
+        #     realFinalBuffer.append(tempBuffer)
+        # buffer = min(realFinalBuffer, key=len)
+        # idxBuffer = np.where(realFinalBuffer == buffer)
+        # realFinalCoordinate = final_coordinate[idxBuffer[0]]
+        # return buffer,realFinalCoordinate
+
+def bruteForce(matrix, sequences, buffer_size):
     maxscore = 0
     buffer_coordinate = []
     final_coordinate = []
+    final_buffer = []
     # buffer_size = buffer_size*2
     # xmovement = [1 for i in range((buffer_size-1)%2)]
     # ymovement = [1 for i in range(buffer_size - ((buffer_size-1)%2))]
-    movement = [1 for i in range(buffer_size-1)]
+    # movement = [1 for i in range(buffer_size-1)]
+    # movement = [1,4,1,1]
     ymax = len(matrix) - 1
     xmax = len(matrix[0]) - 1
-    # ymax = 3
-    # xmax = 7
     for i in range(len(matrix[0])):
+        movement = [1 for i in range(buffer_size-1)]
         is_horizontal = False
         string = matrix[0][i]
         y = 0
         x = i
-        buffer_coordinate.append((x,y))
-        while not(validateMax(movement, ymax, xmax)):
-            for j in range(len(movement)):
+        buffer_coordinate.append((x+1,y+1))
+        while not(validateMax(movement, ymax, xmax)): # ngitung semua kemungkinan
+            for j in range(len(movement)): # melakukan pergerakan sesuai dengan kemungkinan movement saat ini
                 if is_horizontal:  
                     x = (x + movement[j]) % len(matrix[0])
-                    # while (y,x) in buffer_coordinate:
-                    #     x = (x + 1) % len(matrix[0])
-                    string += " " + matrix[y][x]
-                    buffer_coordinate.append((x,y))
-                    # print("y:", y, "x:", x)
-                    is_horizontal = False
+                    if (x+1,y+1) in buffer_coordinate: # kalo movement yang dipakai terdapat 2 cell matrix yang dilewati 
+                        break # maka langsung keluar loop dan mencari kemungkinan movement yang lain
+                    else:
+                        string += " " + matrix[y][x]
+                        buffer_coordinate.append((x+1,y+1))
+                        is_horizontal = False
+                        curr_score = score(sequences, string) # hitung score saat ini
+                        if curr_score > maxscore:
+                            final_coordinate = []
+                            final_buffer = []
+                            maxscore = score(sequences, string)
+                            final_buffer.append(copy.deepcopy(string))
+                            final_coordinate.append(copy.deepcopy(buffer_coordinate))
+                        elif curr_score >= maxscore:
+                            maxscore = score(sequences, string)
+                            final_buffer.append(copy.deepcopy(string))
+                            final_coordinate.append(copy.deepcopy(buffer_coordinate))
                 else:
                     y = (y + movement[j]) % len(matrix)
-                    # while (y,x) in buffer_coordinate:
-                    #     y = (y + 1) % len(matrix)
-                    string += " " + matrix[y][x]
-                    buffer_coordinate.append((x,y))
-                    # print("y:", y, "x:", x)
-                    is_horizontal = True
-            
-            
-            # print(string)
-            # if string == "X1 X2 X3 X4 X5 X6 X7":
-            #     maxscore = 100
-            print(movement)
-            curr_score = score(sequence, string)
+                    if (x+1,y+1) in buffer_coordinate:
+                        break
+                    else:
+                        string += " " + matrix[y][x]
+                        buffer_coordinate.append((x+1,y+1))
+                        is_horizontal = True
+                        curr_score = score(sequences, string) # hitung score saat ini
+                        if curr_score > maxscore:
+                            final_coordinate = []
+                            final_buffer = []
+                            maxscore = score(sequences, string)
+                            final_buffer.append(copy.deepcopy(string))
+                            final_coordinate.append(copy.deepcopy(buffer_coordinate))
+                        elif curr_score >= maxscore:
+                            maxscore = score(sequences, string)
+                            final_buffer.append(copy.deepcopy(string))
+                            final_coordinate.append(copy.deepcopy(buffer_coordinate))
+            curr_score = score(sequences, string)
             if curr_score > maxscore:
                 final_coordinate = []
-                maxscore = score(sequence, string)
+                final_buffer = []
+                maxscore = score(sequences, string)
+                final_buffer.append(copy.deepcopy(string))
                 final_coordinate.append(copy.deepcopy(buffer_coordinate))
             elif curr_score >= maxscore:
-                maxscore = score(sequence, string)
+                maxscore = score(sequences, string)
+                final_buffer.append(copy.deepcopy(string))
                 final_coordinate.append(copy.deepcopy(buffer_coordinate))
             y = 0
             x = i
             is_horizontal = False
             string = matrix[0][i] 
             buffer_coordinate = []
-            buffer_coordinate.append((x,y)) 
+            buffer_coordinate.append((x+1,y+1)) 
             increment_array(movement, xmax, ymax)
+    buffer, coordinate = FinalList(final_coordinate, final_buffer, maxscore, sequences)
     print(maxscore)
-    print(final_coordinate)
-    # print(min(buffer_coordinate, key=sum))
+    print(buffer) if len(buffer) != 0 else print()
+    var = []
+    for tuple in coordinate:
+        x,y = tuple
+        print(str(x) + ", " + str(y))
+
             
             
 
