@@ -18,7 +18,14 @@ Program Cyberpunk 2077 Breach Protocol Solver dengan Algoritme Brute Force</cent
 <ul>
     <li>bin</li>
     <li>doc</li>
+    <ul>
+     <li>Tucil1_K02_13522090.pdf</li>
+    </ul>
     <li>src</li>
+    <ul>
+     <li>main.py</li>
+     <li>funtion.py</li>
+    </ul>
     <li>test</li>
 </ul>
 
