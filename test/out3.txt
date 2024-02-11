@@ -1,0 +1,4 @@
+0
+Tidak memiliki kombinasi dengan score positif.
+
+1.0247230529785156 ms

@@ -1,5 +1,6 @@
 import os.path
 import numpy as np
+import random
 file = os.path.isfile("../test/file.txt")
 print(os.getcwd())
 print(file)
@@ -13,3 +14,25 @@ for i in range(len(buffer)-1):
         break
 token = input("Masukkan token unik (alphanumeric): ").upper().split()
 print(token)
+
+a = 2.6
+print(int(a))
+
+isUnique = False
+matrix_sequence = [[1,2,3,4], [1,2,3,5], [1,2,3,5], [1,2,3,7]]
+reroll = False
+while not(isUnique):
+    for i in range(len(matrix_sequence)-1):
+        if matrix_sequence[i] in matrix_sequence[i+1:]:
+            matrix_sequence = [[random.choice(token) for bla in range(random.randint(2,5))] for blabla in range(3)]
+            reroll = True
+            break
+    if not reroll:
+        isUnique = True
+    reroll = False
+
+a = "AA BB CC LL DD EE"
+if "AA BB CC" in a:
+    print(True)
+if "DD EE" in a:
+    print(True)
