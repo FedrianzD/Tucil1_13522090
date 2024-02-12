@@ -241,81 +241,90 @@ def run():
                     break
         return buffer_size, matrix, matrix_sequence
     else:
+        
         while True:
-            try:
-                token_unik = int(input("\nMasukkan jumlah token unik: "))
-                if token_unik < 2:
-                    raise Exception()
-            except:
-                print("Harus berupa angka dan minimal 2.")
-            else:
-                break
-        while token_unik <= 0:
-            print("Jumlah token unik tidak boleh 0 atau negatif.")
-            token_unik = int(input("Masukkan jumlah token unik: "))
-    
-        token = input("Masukkan token unik (alphanumeric): ").split()
-        isAlphaNum = all(element.isalnum() for element in token)
-        isLen2 = all(len(element) == 2 for element in token)
-        while len(set(token)) != token_unik or not(isAlphaNum) or not(isLen2):
-            print("Token harus berupa alphanumeric dan berjumlah sama dengan jumlah token unik")
-            token = input("Masukkan token unik: ").split()
+            while True:
+                try:
+                    token_unik = int(input("\nMasukkan jumlah token unik: "))
+                    if token_unik < 2:
+                        raise Exception()
+                except:
+                    print("Harus berupa angka dan minimal 2.")
+                else:
+                    break
+            while token_unik <= 0:
+                print("Jumlah token unik tidak boleh 0 atau negatif.")
+                token_unik = int(input("Masukkan jumlah token unik: "))
+        
+            token = input("Masukkan token unik (alphanumeric): ").split()
             isAlphaNum = all(element.isalnum() for element in token)
             isLen2 = all(len(element) == 2 for element in token)
-        while True:
-            try:
+            while len(set(token)) != token_unik or not(isAlphaNum) or not(isLen2):
+                print("Token harus berupa alphanumeric dan berjumlah sama dengan jumlah token unik")
+                token = input("Masukkan token unik: ").split()
+                isAlphaNum = all(element.isalnum() for element in token)
+                isLen2 = all(len(element) == 2 for element in token)
+            while True:
+                try:
+                    buffer_size = int(input("Masukkan ukuran buffer: "))
+                except:
+                    print("Harus beruapa angka.")
+                else:
+                    break
+            while buffer_size < 2:
+                print("Ukuran buffer minimal adalah 2.")
                 buffer_size = int(input("Masukkan ukuran buffer: "))
-            except:
-                print("Harus beruapa angka.")
-            else:
-                break
-        while buffer_size < 2:
-            print("Ukuran buffer minimal adalah 2.")
-            buffer_size = int(input("Masukkan ukuran buffer: "))
-        ukuran_matrix = input("Masukkan ukuran matrix (col,row): ").split()
-        while len(ukuran_matrix) != 2 :
-            print("Harus memasukkan kolom dan baris.")
             ukuran_matrix = input("Masukkan ukuran matrix (col,row): ").split()
-        while int(ukuran_matrix[0]) <= 0 or int(ukuran_matrix[1]) <= 0 or ((int(ukuran_matrix[0]) * int(ukuran_matrix[1])) < token_unik):
-            print("Ukuran matrix tidak boleh 0 ataupun negatif dan ukuran matrix harus lebih besar dari jumlah token unik.")
-            ukuran_matrix = input("Masukkan ukuran matrix (col,row): ").split()
+            while len(ukuran_matrix) != 2 :
+                print("Harus memasukkan kolom dan baris.")
+                ukuran_matrix = input("Masukkan ukuran matrix (col,row): ").split()
+            while int(ukuran_matrix[0]) <= 0 or int(ukuran_matrix[1]) <= 0 or ((int(ukuran_matrix[0]) * int(ukuran_matrix[1])) < token_unik):
+                print("Ukuran matrix tidak boleh 0 ataupun negatif dan ukuran matrix harus lebih besar dari jumlah token unik.")
+                ukuran_matrix = input("Masukkan ukuran matrix (col,row): ").split()
 
-        jumlah_seq = int(input("Masukkan jumlah sequences: "))
-        while jumlah_seq <= 0:
-            print("Jumlah sequence minimal 1.")
             jumlah_seq = int(input("Masukkan jumlah sequences: "))
-        ukuran_max_seq = int(input("Masukkan ukuran maksimal sequences: "))
-        while ukuran_max_seq < 2:
-            print("Panjang minimal sequence adalah 2.")
+            while jumlah_seq <= 0:
+                print("Jumlah sequence minimal 1.")
+                jumlah_seq = int(input("Masukkan jumlah sequences: "))
             ukuran_max_seq = int(input("Masukkan ukuran maksimal sequences: "))
-        print()
-        matrix = [[0 for i in range(int(ukuran_matrix[0]))] for j in range(int(ukuran_matrix[1]))]
-        minimumlength = min(ukuran_matrix[0], ukuran_matrix[1])
-        for item in token:
-            x = random.randint(0, len(matrix)-1)
-            y = random.randint(0, len(matrix[0])-1)
-            while matrix[x][y] != 0:
+            while ukuran_max_seq < 2:
+                print("Panjang minimal sequence adalah 2.")
+                ukuran_max_seq = int(input("Masukkan ukuran maksimal sequences: "))
+            print()
+            matrix = [[0 for i in range(int(ukuran_matrix[0]))] for j in range(int(ukuran_matrix[1]))]
+            minimumlength = min(ukuran_matrix[0], ukuran_matrix[1])
+            for item in token:
                 x = random.randint(0, len(matrix)-1)
                 y = random.randint(0, len(matrix[0])-1)
-            matrix[x][y] = item
-        for i in range(len(matrix)):
-            for j in range(len(matrix[0])):
-                if matrix[i][j] != 0:
-                    continue
-                else:
-                    matrix[i][j] = random.choice(token)
-        isUnique = False
-        matrix_sequence = [[random.choice(token) for i in range(random.randint(2,ukuran_max_seq))] for j in range(jumlah_seq)]
-        reroll = False
-        while not(isUnique):
-            for i in range(len(matrix_sequence)-1):
-                if matrix_sequence[i] in matrix_sequence[i+1:]:
-                    matrix_sequence = [[random.choice(token) for bla in range(random.randint(2,ukuran_max_seq))] for blabla in range(jumlah_seq)]
-                    reroll = True
-                    break
-            if not reroll:
-                isUnique = True
+                while matrix[x][y] != 0:
+                    x = random.randint(0, len(matrix)-1)
+                    y = random.randint(0, len(matrix[0])-1)
+                matrix[x][y] = item
+            for i in range(len(matrix)):
+                for j in range(len(matrix[0])):
+                    if matrix[i][j] != 0:
+                        continue
+                    else:
+                        matrix[i][j] = random.choice(token)
+            isUnique = False
+            matrix_sequence = [[random.choice(token) for i in range(random.randint(2,ukuran_max_seq))] for j in range(jumlah_seq)]
             reroll = False
+            count = 0
+            while not(isUnique):
+                for i in range(len(matrix_sequence)-1):
+                    if matrix_sequence[i] in matrix_sequence[i+1:]:
+                        matrix_sequence = [[random.choice(token) for bla in range(random.randint(2,ukuran_max_seq))] for blabla in range(jumlah_seq)]
+                        reroll = True
+                        count += 1
+                        break
+                if not reroll:
+                    isUnique = True
+                reroll = False
+                if count >= 500:
+                    print("Jumlah token unik tidak cukup untuk membuat sequence yang unik.")
+                    break
+            if count < 500:
+                break 
         for item in matrix_sequence:
             item.append(random.randint(1,100))
         print_matrix(matrix)
