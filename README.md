@@ -10,7 +10,8 @@ Program Cyberpunk 2077 Breach Protocol Solver dengan Algoritme Brute Force</cent
 <h2> <b> Cara Menjalankan Program </b> </h2>
 
  - Buka terminal dan clone repo ini `git clone https://github.com/FedrianzD/Tucil1_13522090.git`
- - Siapkan file txt yang ingin digunakan dan simpan pada folder test
+ - Siapkan file txt yang ingin digunakan
+ - Simpan file txt pada folder test jika ingin menggunakan relative path
  - Pindahkan Current Working Directory ke `src` menjadi `../Tucil1_13522090/src`
  - Jalankan program dengan mengetik `python3 main.py` pada terminal
 
