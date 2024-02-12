@@ -5,7 +5,8 @@ Program Cyberpunk 2077 Breach Protocol Solver dengan Algoritme Brute Force</cent
 <h2> <b> Pembuat </b> </h2>
 
 |                    Nama                        |         NIM         |        Kelas       |
-| Fedrianz Dharma| 1322090 | K02|
+| --------------------------------------------------| -------------------| ------------------ |
+| Fedrianz Dharma | 1322090 | K02 |
 
 <h2> <b> Penjelasan Singkat Program </b> </h2>
 <p> <center> Program Cyberpunk 2077 Breach Protocol Solver adalah program yang dapat digunakan untuk menemukan solusi dari minigame Breach Protocol pada Cyberpunk 2077 yang paling optimal untuk semua kemungkinan matrix, sequences, dan buffer size dengan menggunakan algoritma brute force. 
