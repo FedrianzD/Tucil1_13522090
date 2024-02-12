@@ -163,16 +163,27 @@ def run():
     while fromFile != 'y' and fromFile != 'n':
         fromFile = input("Masukkan dari file txt? (y/n): ").lower()
     if fromFile == 'y':
+        foldertest = input("File pada folder test? (y/n): ")
+        while foldertest != 'y' and foldertest != 'n':
+            foldertest = input("File pada folder test? (y/n): ")
         error = True
         while error:
-            filename = input("Masukkan nama file txt: ")
-            filename = "../test/" + filename 
-            while not(os.path.isfile(filename)):
-                print("\nFile tidak ditemukan.\n")
+            if foldertest == 'y':
                 filename = input("Masukkan nama file txt: ")
-                filename = "../test/" + filename
+                filename = "../test/" + filename 
+                while not(os.path.isfile(filename)):
+                    print("\nFile tidak ditemukan.\n")
+                    filename = input("Masukkan nama file txt: ")
+                    filename = "../test/" + filename
+                file = open(filename, 'r')
+            else:
+                path = input("Masukkan absolute path dari file txt: ")
+                while not(os.path.isfile(path)):
+                    print("\nFile tidak ditemukan.\n")
+                    path = input("Masukkan absolute path dari file txt: ")
+                file = open(path, 'r')
             print()
-            file = open(filename, 'r')
+            
             while True:
                 try:
                     buffer_size = int(file.readline())
